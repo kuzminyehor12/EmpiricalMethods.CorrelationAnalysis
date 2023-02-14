@@ -25,7 +25,7 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
             using (TextReader reader = File.OpenText(path))
             {
                 string text = reader.ReadToEnd();
-                string[] bits = text.Split(' ', '\r', '\n');
+                string[] bits = text.Split(' ', '\r', '\n', '\t');
 
                 var findingStrings = bits.Where(b => !string.IsNullOrEmpty(b)).ToArray();
 

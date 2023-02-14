@@ -1,4 +1,5 @@
-﻿using EmpiricMethods_Lab1.Forms.Extensions;
+﻿using EmpiricMethods_Lab1.DataProcessing.DataSource;
+using EmpiricMethods_Lab1.Forms.Extensions;
 using EmpiricMethods_Lab1.Forms.Forms;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,22 @@ namespace EmpiricMethods_Lab1.Forms
 {
     public partial class MainForm : Form
     {
+        private CorrelationFieldForm _correlationFieldForm;
+        public VariationalSeries XSource { get; private set; }
+        public VariationalSeries YSource { get; private set; }
         public MainForm()
         {
             InitializeComponent();
+            _correlationFieldForm = new CorrelationFieldForm();
+            SetTabPages();
         }
 
         public void SetTabPages()
         {
-            new CorrelationFieldForm().AddToTabPage(tabControl1, 0);
+            _correlationFieldForm.AddToTabPage(tabControl1, 0);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog
             {
@@ -35,10 +41,9 @@ namespace EmpiricMethods_Lab1.Forms
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string path = dialog.FileName;
-                /*DataSource = new VariationalSeries(path);
-                _abnormalValuesForm = new AbnormalValuesForm(DataSource);
-                _probabilitySheetForm = new ProbabilitySheetForm(DataSource);
-                await UploadVariationalSeries();*/
+                XSource = new VariationalSeries(path, true);
+                YSource = new VariationalSeries(path, false);
+                _correlationFieldForm.UploadSources(XSource, YSource);
             }
         }
     }

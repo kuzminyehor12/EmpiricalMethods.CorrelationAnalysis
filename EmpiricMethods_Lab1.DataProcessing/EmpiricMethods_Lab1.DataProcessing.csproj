@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="DataAnalysis1.DataSource">
-      <HintPath>..\..\..\Lab3_DataAnalysis\Lab3_DataAnalysis.Computing\bin\Debug\netcoreapp3.1\DataAnalysis1.DataSource.dll</HintPath>
+      <HintPath>..\..\Lab3_DataAnalysis\Lab3_DataAnalysis.Computing\bin\Debug\netcoreapp3.1\DataAnalysis1.DataSource.dll</HintPath>
     </Reference>
   </ItemGroup>
 
