@@ -16,18 +16,29 @@ namespace EmpiricMethods_Lab1.Forms
     public partial class MainForm : Form
     {
         private CorrelationFieldForm _correlationFieldForm;
+        private StatCharacteristicsForm _characteristicsForm;
+        private CorrelationCoefficientForm _correlationCoefficientForm;
         public VariationalSeries XSource { get; private set; }
         public VariationalSeries YSource { get; private set; }
         public MainForm()
         {
             InitializeComponent();
-            _correlationFieldForm = new CorrelationFieldForm();
+            SetForms();
             SetTabPages();
+        }
+
+        public void SetForms()
+        {
+            _correlationFieldForm = new CorrelationFieldForm();
+            _characteristicsForm = new StatCharacteristicsForm();
+            _correlationCoefficientForm = new CorrelationCoefficientForm();
         }
 
         public void SetTabPages()
         {
             _correlationFieldForm.AddToTabPage(tabControl1, 0);
+            _characteristicsForm.AddToTabPage(tabControl1, 1);
+            _correlationCoefficientForm.AddToTabPage(tabControl1, 2);
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -44,6 +55,8 @@ namespace EmpiricMethods_Lab1.Forms
                 XSource = new VariationalSeries(path, true);
                 YSource = new VariationalSeries(path, false);
                 _correlationFieldForm.UploadSources(XSource, YSource);
+                _characteristicsForm.SetupCharacteristics(XSource, YSource);
+                _correlationCoefficientForm.UploadCoefficients(XSource, YSource);
             }
         }
     }

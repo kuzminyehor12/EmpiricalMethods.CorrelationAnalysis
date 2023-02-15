@@ -7,10 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmpiricMethods_Lab1.Computing\EmpiricMethods_Lab1.Computing.csproj" />
     <ProjectReference Include="..\EmpiricMethods_Lab1.DataProcessing\EmpiricMethods_Lab1.DataProcessing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="DataAnalysis1.Computing">
+      <HintPath>..\..\Lab1_DataAnalysis\DataAnalysis1.Computing\bin\Debug\DataAnalysis1.Computing.dll</HintPath>
+    </Reference>
     <Reference Include="DataAnalysis1.DataSource">
       <HintPath>..\..\Lab3_DataAnalysis\Lab3_DataAnalysis.Computing\bin\Debug\netcoreapp3.1\DataAnalysis1.DataSource.dll</HintPath>
     </Reference>
