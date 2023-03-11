@@ -10,6 +10,11 @@ namespace EmpiricMethods_Lab1.Forms.Extensions
     {
         public static string ToStringFormatted(this Tuple<double, double> tuple, string format)
         {
+            if(tuple is null)
+            {
+                return "-";
+            }
+
             return "(" + tuple.Item1.ToString(format) + ", " + tuple.Item2.ToString(format) + ")";
         }
     }

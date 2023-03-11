@@ -2,6 +2,7 @@
 using EmpiricMethods_Lab1.DataProcessing.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,21 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
 {
     public class VariationalSeries : BaseSeries<double>
     {
+        private readonly CultureInfo Culture = CultureInfo.InvariantCulture;
+        private readonly NumberStyles NumberStyles = NumberStyles.Any;
+        private const int AUTOMPG_COLUMNS_COUNT = 8;
         public bool IsFirst { get; set; }
         public VariationalSeries()
         {
             Series = new List<double>();
         }
-        public VariationalSeries(string path, bool isFirst)
+        public VariationalSeries(IEnumerable<double> series)
+        {
+            Series = series.ToList();
+        }
+        public VariationalSeries(
+            string path, 
+            bool isFirst)
         {
             Series = new List<double>();
             IsFirst = isFirst;
@@ -34,7 +44,28 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
                 {
                     double res = 0;
 
-                    if ((IsFirst ? (i % 2 == 0) : (i % 2 != 0)) && double.TryParse(findingStrings[i], out res))
+                    if ((IsFirst ? (i % 2 == 0) : (i % 2 != 0)) && double.TryParse(findingStrings[i], NumberStyles, Culture, out res))
+                    {
+                        Series.Add(res);
+                    }
+                }
+            }
+        }
+
+        public void InitSeries(string path, int index)
+        {
+            using (TextReader reader = File.OpenText(path))
+            {
+                string text = reader.ReadToEnd();
+                string[] bits = text.Split(' ', '\r', '\n', '\t');
+
+                var findingStrings = bits.Where(b => !string.IsNullOrEmpty(b)).ToArray();
+
+                for (int i = index - 1; i < findingStrings.Length; i += AUTOMPG_COLUMNS_COUNT)
+                {
+                    double res = 0;
+
+                    if (double.TryParse(findingStrings[i], NumberStyles, Culture, out res))
                     {
                         Series.Add(res);
                     }
@@ -46,7 +77,7 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
         {
             var series = new VariationalSeries();
             
-            if(first.Series.Count > second.Series.Count)
+            if(first.Series.Count >= second.Series.Count)
             {
                 for (int i = 0; i < first.Series.Count; i++)
                 {
@@ -64,7 +95,7 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
             return series;
         }
 
-        public VariationalSeries Rank()
+        public List<ValueRank> Rank()
         {
             var valueRanks = new List<ValueRank>();
 
@@ -73,15 +104,18 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
                 var valueRank = new ValueRank
                 {
                     Rank = null,
-                    Value = Series[i]
+                    Value = Series[i],
+                    AmountInBundle = 0
                 };
 
                 valueRanks.Add(valueRank);
             }
 
-            for (int i = 0; i < valueRanks.Count(); i++)
+            var sortedValueRanks = valueRanks.OrderBy(v => v.Value).ToList();
+            
+            for (int i = 0; i < sortedValueRanks.Count(); i++)
             {
-                valueRanks[i].Rank = i + 1;
+                sortedValueRanks[i].Rank = i + 1;
             }
 
             var finalList = new List<ValueRank>();
@@ -89,11 +123,13 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
             var rankDivider = 1;
             var rankSum = 0.0;
 
-            foreach (var value in valueRanks)
+            foreach (var value in sortedValueRanks)
             {
                 if (!finalList.Select(e => e.Value).Contains(value.Value))
                 {
-                    finalList.Add(value);
+                    rankSum = 0;
+                    rankDivider = 1;
+                    rankSum += (double)value.Rank;
                 }
                 else
                 {
@@ -102,22 +138,34 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
                     repetableValues.Add(new ValueRank
                     {
                         Value = value.Value,
+                        AmountInBundle = rankDivider,
                         Rank = rankSum / rankDivider
                     });
-                    rankSum = 0;
                 }
+
+                finalList.Add(value);
             }
 
             foreach (var criteria in repetableValues
-                                .OrderBy(e => e.Rank)
+                                .OrderByDescending(e => e.AmountInBundle)
                                 .Distinct(new SignRankCriteriaComparer()))
             {
-                finalList.First(e => e.Value == criteria.Value).Rank = criteria.Rank;
+                finalList.ForEach(e =>
+                {
+                    if (e.Value == criteria.Value)
+                    {
+                        e.Rank = criteria.Rank;
+                        e.AmountInBundle = criteria.AmountInBundle;
+                    }
+                });
             }
 
-            var resultSeries = new VariationalSeries();
-            resultSeries.Series = finalList.Select(e => (double)e.Rank).ToList();
-            return resultSeries;
+            for (int i = 0; i < valueRanks.Count; i++)
+            {
+                valueRanks[i] = finalList.First(e => valueRanks[i].Value == e.Value);
+            }
+
+            return valueRanks;
         }
     }
 

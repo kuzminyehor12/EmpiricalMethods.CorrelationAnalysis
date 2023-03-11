@@ -1,6 +1,6 @@
 ﻿namespace EmpiricMethods_Lab1.Forms.Forms
 {
-    partial class CorrelationCoefficientForm
+    partial class LinearExistenceCheckForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Coefficient = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Interval = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Criteria = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Pearson = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CorrelationRatio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Statistics = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsSignificant = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ContactExists = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Criteria = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Summary = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.IsLinear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,48 +46,33 @@
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Title,
-            this.Coefficient,
-            this.Interval,
-            this.Criteria,
+            this.Pearson,
+            this.CorrelationRatio,
             this.Statistics,
-            this.IsSignificant,
-            this.ContactExists});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.Criteria,
+            this.Summary,
+            this.IsLinear});
+            this.dataGridView1.Location = new System.Drawing.Point(2, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(975, 451);
+            this.dataGridView1.Size = new System.Drawing.Size(938, 451);
             this.dataGridView1.TabIndex = 0;
             // 
-            // Title
+            // Pearson
             // 
-            this.Title.HeaderText = "Name";
-            this.Title.MinimumWidth = 6;
-            this.Title.Name = "Title";
-            this.Title.ReadOnly = true;
+            this.Pearson.HeaderText = "Pearson";
+            this.Pearson.MinimumWidth = 6;
+            this.Pearson.Name = "Pearson";
+            this.Pearson.ReadOnly = true;
             // 
-            // Coefficient
+            // CorrelationRatio
             // 
-            this.Coefficient.HeaderText = "Coefficient";
-            this.Coefficient.MinimumWidth = 6;
-            this.Coefficient.Name = "Coefficient";
-            this.Coefficient.ReadOnly = true;
-            // 
-            // Interval
-            // 
-            this.Interval.HeaderText = "Interval";
-            this.Interval.MinimumWidth = 6;
-            this.Interval.Name = "Interval";
-            this.Interval.ReadOnly = true;
-            // 
-            // Criteria
-            // 
-            this.Criteria.HeaderText = "Criteria";
-            this.Criteria.MinimumWidth = 6;
-            this.Criteria.Name = "Criteria";
-            this.Criteria.ReadOnly = true;
+            this.CorrelationRatio.HeaderText = "Correlation Ratio";
+            this.CorrelationRatio.MinimumWidth = 6;
+            this.CorrelationRatio.Name = "CorrelationRatio";
+            this.CorrelationRatio.ReadOnly = true;
             // 
             // Statistics
             // 
@@ -96,28 +81,35 @@
             this.Statistics.Name = "Statistics";
             this.Statistics.ReadOnly = true;
             // 
-            // IsSignificant
+            // Criteria
             // 
-            this.IsSignificant.HeaderText = "Significant/Insignificant";
-            this.IsSignificant.MinimumWidth = 6;
-            this.IsSignificant.Name = "IsSignificant";
-            this.IsSignificant.ReadOnly = true;
+            this.Criteria.HeaderText = "Criteria";
+            this.Criteria.MinimumWidth = 6;
+            this.Criteria.Name = "Criteria";
+            this.Criteria.ReadOnly = true;
             // 
-            // ContactExists
+            // Summary
             // 
-            this.ContactExists.HeaderText = "Contact Exists";
-            this.ContactExists.MinimumWidth = 6;
-            this.ContactExists.Name = "ContactExists";
-            this.ContactExists.ReadOnly = true;
+            this.Summary.HeaderText = "Summary";
+            this.Summary.MinimumWidth = 6;
+            this.Summary.Name = "Summary";
+            this.Summary.ReadOnly = true;
             // 
-            // CorrelationCoefficientForm
+            // IsLinear
+            // 
+            this.IsLinear.HeaderText = "Is Linear";
+            this.IsLinear.MinimumWidth = 6;
+            this.IsLinear.Name = "IsLinear";
+            this.IsLinear.ReadOnly = true;
+            // 
+            // LinearExistenceCheckForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(976, 450);
+            this.ClientSize = new System.Drawing.Size(942, 451);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "CorrelationCoefficientForm";
-            this.Text = "CorrelationCoefficient";
+            this.Name = "LinearExistenceCheckForm";
+            this.Text = "LinearExistenceCheckForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -126,12 +118,12 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Coefficient;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Interval;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Criteria;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Pearson;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CorrelationRatio;
         private System.Windows.Forms.DataGridViewTextBoxColumn Statistics;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IsSignificant;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ContactExists;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Criteria;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Summary;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsLinear;
     }
 }

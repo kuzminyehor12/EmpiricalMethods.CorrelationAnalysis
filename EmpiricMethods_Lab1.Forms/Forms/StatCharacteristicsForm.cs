@@ -25,7 +25,7 @@ namespace EmpiricMethods_Lab1.Forms.Forms
 
         public void SetupCharacteristics(VariationalSeries xSource, VariationalSeries ySource)
         {
-            
+            dataGridView1.Rows.Clear();
             dataGridView1.RowHeadersWidth = HEADER_CELL_WIDTH;
 
             ComputeCharacteristics(xSource, ySource);
