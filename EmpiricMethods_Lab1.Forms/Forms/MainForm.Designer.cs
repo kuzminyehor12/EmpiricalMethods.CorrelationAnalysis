@@ -33,13 +33,12 @@
             this.StatCharacteristics = new System.Windows.Forms.TabPage();
             this.CorrelationCoefficients = new System.Windows.Forms.TabPage();
             this.LinearCorrelationExistence = new System.Windows.Forms.TabPage();
+            this.OneDimensionalLinearRegression = new System.Windows.Forms.TabPage();
+            this.MultiDimensionalRegression = new System.Windows.Forms.TabPage();
+            this.OneDimensionalNonLinearRegression = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -48,6 +47,9 @@
             this.tabControl1.Controls.Add(this.StatCharacteristics);
             this.tabControl1.Controls.Add(this.CorrelationCoefficients);
             this.tabControl1.Controls.Add(this.LinearCorrelationExistence);
+            this.tabControl1.Controls.Add(this.OneDimensionalLinearRegression);
+            this.tabControl1.Controls.Add(this.MultiDimensionalRegression);
+            this.tabControl1.Controls.Add(this.OneDimensionalNonLinearRegression);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -93,6 +95,35 @@
             this.LinearCorrelationExistence.Text = "Linear Correlation Existence";
             this.LinearCorrelationExistence.UseVisualStyleBackColor = true;
             // 
+            // OneDimensionalLinearRegression
+            // 
+            this.OneDimensionalLinearRegression.Location = new System.Drawing.Point(4, 25);
+            this.OneDimensionalLinearRegression.Name = "OneDimensionalLinearRegression";
+            this.OneDimensionalLinearRegression.Size = new System.Drawing.Size(968, 444);
+            this.OneDimensionalLinearRegression.TabIndex = 4;
+            this.OneDimensionalLinearRegression.Text = "One Dimensional Linear Regression";
+            this.OneDimensionalLinearRegression.UseVisualStyleBackColor = true;
+            // 
+            // MultiDimensionalRegression
+            // 
+            this.MultiDimensionalRegression.Location = new System.Drawing.Point(4, 25);
+            this.MultiDimensionalRegression.Name = "MultiDimensionalRegression";
+            this.MultiDimensionalRegression.Padding = new System.Windows.Forms.Padding(3);
+            this.MultiDimensionalRegression.Size = new System.Drawing.Size(968, 444);
+            this.MultiDimensionalRegression.TabIndex = 5;
+            this.MultiDimensionalRegression.Text = "Multi Dimensional Regression";
+            this.MultiDimensionalRegression.UseVisualStyleBackColor = true;
+            // 
+            // OneDimensionalNonLinearRegression
+            // 
+            this.OneDimensionalNonLinearRegression.Location = new System.Drawing.Point(4, 25);
+            this.OneDimensionalNonLinearRegression.Name = "OneDimensionalNonLinearRegression";
+            this.OneDimensionalNonLinearRegression.Padding = new System.Windows.Forms.Padding(3);
+            this.OneDimensionalNonLinearRegression.Size = new System.Drawing.Size(968, 444);
+            this.OneDimensionalNonLinearRegression.TabIndex = 6;
+            this.OneDimensionalNonLinearRegression.Text = "One Dimensional Non-Linear Regression";
+            this.OneDimensionalNonLinearRegression.UseVisualStyleBackColor = true;
+            // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
@@ -115,65 +146,17 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(607, 493);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(65, 22);
-            this.numericUpDown1.TabIndex = 3;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(607, 521);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(65, 22);
-            this.numericUpDown2.TabIndex = 4;
-            this.numericUpDown2.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(978, 576);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.tabControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -187,7 +170,8 @@
         private System.Windows.Forms.TabPage CorrelationCoefficients;
         private System.Windows.Forms.TabPage LinearCorrelationExistence;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.TabPage OneDimensionalLinearRegression;
+        private System.Windows.Forms.TabPage MultiDimensionalRegression;
+        private System.Windows.Forms.TabPage OneDimensionalNonLinearRegression;
     }
 }

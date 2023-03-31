@@ -14,14 +14,7 @@ namespace EmpiricMethods_Lab1.Computing.Extensions
 
             foreach (var c in classes)
             {
-                if (!c.Any())
-                {
-                    averages.Add(0);
-                }
-                else
-                {
-                    averages.Add(c.Average());
-                }
+                averages.Add(c.Average());
             }
 
             return averages;

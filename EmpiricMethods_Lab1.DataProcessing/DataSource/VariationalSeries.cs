@@ -13,7 +13,7 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
     {
         private readonly CultureInfo Culture = CultureInfo.InvariantCulture;
         private readonly NumberStyles NumberStyles = NumberStyles.Any;
-        private const int AUTOMPG_COLUMNS_COUNT = 8;
+        public const int AUTOMPG_COLUMNS_COUNT = 8;
         public bool IsFirst { get; set; }
         public VariationalSeries()
         {
@@ -61,7 +61,7 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
 
                 var findingStrings = bits.Where(b => !string.IsNullOrEmpty(b)).ToArray();
 
-                for (int i = index - 1; i < findingStrings.Length; i += AUTOMPG_COLUMNS_COUNT)
+                for (int i = index - 1; i < findingStrings.Length; i += 8)
                 {
                     double res = 0;
 

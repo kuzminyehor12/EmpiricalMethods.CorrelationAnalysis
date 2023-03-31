@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmpiricMethods_Lab1.Computing.Models
 {
-    public class CorrelationResult
+    public abstract class CorrelationResult
     {
         public CorrelationResult(double coefficient, int n)
         {
