@@ -32,8 +32,20 @@ namespace EmpiricMethods_Lab1.Forms.Forms
             for (int i = 0; i < parameters.Rows; i++)
             {
                 dataGridView1.Rows.Add($"a{i}", parameters[i, 0].ToString(Format), Math.Sqrt(variances[i]).ToString(Format), intervals[i].ToStringFormatted(Format),
-                    statistics[i].Item1.ToString(Format), multiDimensionalComputing.Criteria, statistics[i].Item2);
+                    statistics[i].Item1.ToString(Format), multiDimensionalComputing.Criteria.ToString(Format), statistics[i].Item2);
             }
+
+            var residualVariance = multiDimensionalComputing.ResidualVariance();
+            var fTestResult = multiDimensionalComputing.FTest();
+            var coefficientOfDetermination = multiDimensionalComputing.CoefficientOfDetermination();
+            var normality = multiDimensionalComputing.Normality();
+
+            textBox1.Text = residualVariance.ToString(Format);
+            textBox3.Text = fTestResult.Value.ToString(Format);
+            textBox5.Text = fTestResult.Criteria.ToString(Format);
+            textBox6.Text = fTestResult.Summary;
+            textBox2.Text = coefficientOfDetermination.ToString(Format);
+            textBox4.Text = normality.ToString();
         }
     }
 }

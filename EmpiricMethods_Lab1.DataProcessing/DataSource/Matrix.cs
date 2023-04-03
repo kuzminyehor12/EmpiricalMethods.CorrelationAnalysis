@@ -1,5 +1,6 @@
 using EmpiricMethods_Lab1.DataProcessing.Validation;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EmpiricMethods_Lab1.DataProcessing.DataSource
@@ -201,7 +202,20 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
         {
             var det = Det() ?? 
                 throw new MatrixException("Determinant cannot be solved with n x m matrix if n not equal to m");
-            return Transpose().Multiply(1 / det);
+
+            var matrix = Clone() as Matrix;
+            var clone = Clone() as Matrix;
+
+            for (int i = 0; i < matrix.Rows; i++)
+            {
+                for (int j = 0; j < matrix.Columns; j++)
+                {
+                    matrix[i, j] = Math.Pow(-1, i + j) * clone.AdditionalMinor(i, j).Det() / det ??
+                        throw new MatrixException("Determinant cannot be solved with n x m matrix if n not equal to m");
+                }
+            }
+
+            return matrix;
         }
 
         public double? Det()
@@ -217,9 +231,9 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
 
                 for (int j = 0; j < Columns; j++)
                 {
-                    var det = AdditionalMinor(j)?.Det() ??
+                    var det = AdditionalMinor(0, j)?.Det() ??
                         throw new MatrixException("Determinant cannot be solved with n x m matrix if n not equal to m");
-                    sum += Math.Pow(-1, 1 + j) * Array[0][j] * det;
+                    sum += Math.Pow(-1, j) * Array[0][j] * det;
                 }
 
                 return sum;
@@ -228,24 +242,80 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
             return null;
         }
 
-        public Matrix AdditionalMinor(int column)
+        public Matrix AdditionalMinor(int row, int column)
         {
-            var resultMatrix = new double[Rows - 1][];
+           /* var resultMatrix = new double[Rows - 1][];
 
             for (int i = 0; i < Rows - 1; i++)
             {
                 resultMatrix[i] = new double[Columns - 1];
             }
 
-            for (int i = 1; i < Array.Length; i++)
+            int j = 0;
+            for (int i = 0; i < Columns; i++)
             {
-                resultMatrix[i - 1] = Array[i];
-                var listRow = resultMatrix[i - 1].ToList();
-                listRow.RemoveAt(column);
-                resultMatrix[i - 1] = listRow.ToArray();
+                if(i == column)
+                {
+                    continue;
+                }
+
+                resultMatrix[j] = Array.Select(e => e[i]).ToArray();
+                j++;
             }
 
-            return new Matrix(resultMatrix);
+            var matrix = new Matrix(resultMatrix).Transpose();
+
+            var tempMatrix = new double[Rows - 1][];
+
+            for (int i = 0; i < Rows - 1; i++)
+            {
+                tempMatrix[i] = new double[Columns - 1];
+            }
+
+            j = 0;
+            for (int i = 0; i < matrix.Rows; i++)
+            {
+                if (i == row)
+                {
+                    continue;
+                }
+
+                tempMatrix[j] = matrix.Array[i];
+                j++;
+            }*/
+             var resultMatrix = new double[Rows - 1][];
+
+             for (int i = 0; i < Rows - 1; i++)
+             {
+                 resultMatrix[i] = new double[Columns - 1];
+             }
+
+             for (int i = 0; i < Array.Length; i++)
+             {
+                 List<double> listRow = new List<double>();
+
+                 if(i == row)
+                 {
+                     continue;
+                 }
+                 else if(i < row)
+                 {
+                     resultMatrix[i] = Array[i];
+                     listRow = resultMatrix[i].ToList();
+                     listRow.RemoveAt(column);
+                     resultMatrix[i] = listRow.ToArray();
+                 }
+                 else if(i > row)
+                 {
+                     resultMatrix[i - 1] = Array[i];
+                     listRow = resultMatrix[i - 1].ToList();
+                     listRow.RemoveAt(column);
+                     resultMatrix[i - 1] = listRow.ToArray();
+                 }
+             }
+
+             return new Matrix(resultMatrix);
+            //return new Matrix(tempMatrix);
         }
 
         private void ValidateMatrix(Matrix matrix)

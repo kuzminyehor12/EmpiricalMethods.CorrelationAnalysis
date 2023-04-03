@@ -35,10 +35,13 @@
             this.LinearCorrelationExistence = new System.Windows.Forms.TabPage();
             this.OneDimensionalLinearRegression = new System.Windows.Forms.TabPage();
             this.MultiDimensionalRegression = new System.Windows.Forms.TabPage();
-            this.OneDimensionalNonLinearRegression = new System.Windows.Forms.TabPage();
+            this.BalancesDiagram = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -49,7 +52,7 @@
             this.tabControl1.Controls.Add(this.LinearCorrelationExistence);
             this.tabControl1.Controls.Add(this.OneDimensionalLinearRegression);
             this.tabControl1.Controls.Add(this.MultiDimensionalRegression);
-            this.tabControl1.Controls.Add(this.OneDimensionalNonLinearRegression);
+            this.tabControl1.Controls.Add(this.BalancesDiagram);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -114,15 +117,15 @@
             this.MultiDimensionalRegression.Text = "Multi Dimensional Regression";
             this.MultiDimensionalRegression.UseVisualStyleBackColor = true;
             // 
-            // OneDimensionalNonLinearRegression
+            // BalancesDiagram
             // 
-            this.OneDimensionalNonLinearRegression.Location = new System.Drawing.Point(4, 25);
-            this.OneDimensionalNonLinearRegression.Name = "OneDimensionalNonLinearRegression";
-            this.OneDimensionalNonLinearRegression.Padding = new System.Windows.Forms.Padding(3);
-            this.OneDimensionalNonLinearRegression.Size = new System.Drawing.Size(968, 444);
-            this.OneDimensionalNonLinearRegression.TabIndex = 6;
-            this.OneDimensionalNonLinearRegression.Text = "One Dimensional Non-Linear Regression";
-            this.OneDimensionalNonLinearRegression.UseVisualStyleBackColor = true;
+            this.BalancesDiagram.Location = new System.Drawing.Point(4, 25);
+            this.BalancesDiagram.Name = "BalancesDiagram";
+            this.BalancesDiagram.Padding = new System.Windows.Forms.Padding(3);
+            this.BalancesDiagram.Size = new System.Drawing.Size(968, 444);
+            this.BalancesDiagram.TabIndex = 6;
+            this.BalancesDiagram.Text = "Balances Diagram";
+            this.BalancesDiagram.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -146,18 +149,45 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.numericUpDown1.Location = new System.Drawing.Point(581, 479);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(91, 30);
+            this.numericUpDown1.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label1.Location = new System.Drawing.Point(327, 481);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(235, 25);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Dependent Source Index:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(978, 576);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.tabControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -172,6 +202,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage OneDimensionalLinearRegression;
         private System.Windows.Forms.TabPage MultiDimensionalRegression;
-        private System.Windows.Forms.TabPage OneDimensionalNonLinearRegression;
+        private System.Windows.Forms.TabPage BalancesDiagram;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label1;
     }
 }

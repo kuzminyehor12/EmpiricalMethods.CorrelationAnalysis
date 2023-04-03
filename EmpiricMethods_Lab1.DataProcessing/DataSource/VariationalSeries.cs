@@ -61,7 +61,7 @@ namespace EmpiricMethods_Lab1.DataProcessing.DataSource
 
                 var findingStrings = bits.Where(b => !string.IsNullOrEmpty(b)).ToArray();
 
-                for (int i = index - 1; i < findingStrings.Length; i += 8)
+                for (int i = index - 1; i < findingStrings.Length; i += AUTOMPG_COLUMNS_COUNT)
                 {
                     double res = 0;
 

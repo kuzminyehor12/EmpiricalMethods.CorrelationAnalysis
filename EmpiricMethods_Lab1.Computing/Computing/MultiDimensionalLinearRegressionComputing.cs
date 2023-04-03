@@ -1,11 +1,9 @@
 ﻿using DataAnalysis1.Computing.Computing;
+using EmpiricMethods_Lab1.Computing.Models;
 using EmpiricMethods_Lab1.DataProcessing.DataSource;
 using EmpiricMethods_Lab1.DataProcessing.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmpiricMethods_Lab1.Computing.Computing
 {
@@ -22,6 +20,54 @@ namespace EmpiricMethods_Lab1.Computing.Computing
             {
                 var quantileComputing = new SeriesQuantileComputing();
                 return quantileComputing.ComputeStudentQuantile(1 - Alpha / 2, N - P - 1);
+            }
+        }
+
+        public VariationalSeries Balances
+        {
+            get
+            {
+                var parameters = Parameters();
+                var balances = new List<double>();
+                var matrix = Matrix();
+
+                for (int i = 0; i < N; i++)
+                {
+                    double paramResult = 0;
+
+                    for (int j = 0; j < P; j++)
+                    {
+                        paramResult -= parameters[j, 0] * matrix[i, j];
+                    }
+
+                    balances.Add(DependentSource.Series[i] - paramResult);
+                }
+
+                return new VariationalSeries(balances);
+            }
+        }
+
+        public VariationalSeries Arguments
+        {
+            get
+            {
+                var parameters = Parameters();
+                var arguments = new List<double>();
+                var matrix = Matrix();
+
+                for (int i = 0; i < N; i++)
+                {
+                    double paramResult = 0;
+
+                    for (int j = 0; j < P; j++)
+                    {
+                        paramResult += parameters[j, 0] * matrix[i, j];
+                    }
+
+                    arguments.Add(paramResult);
+                }
+
+                return new VariationalSeries(arguments);
             }
         }
         public MultiDimensionalLinearRegressionComputing(
@@ -118,12 +164,43 @@ namespace EmpiricMethods_Lab1.Computing.Computing
 
             for (int i = 0; i < P + 1; i++)
             {
-                var statistic = parameters[i, 0] / Math.Sqrt(variances[0]);
+                var statistic = parameters[i, 0] / Math.Sqrt(variances[i]);
                 var summary = Math.Abs(statistic) <= Criteria ? NullEqual.Equal : NullEqual.NotEqual;
                 statistics[i] = Tuple.Create(statistic, summary);
             }
 
             return statistics;
+        }
+
+        public double CoefficientOfDetermination()
+        {
+            var residualVariance = ResidualVariance();
+            var ySourcePointEstimation = new PointEstimationCharacteristicsComputing(DependentSource);
+            var variance = ySourcePointEstimation.ComputeDispersion();
+            return 1 - ((N - (P + 1)) * residualVariance / ((N - 1) * variance));
+        }
+
+        public FTestResult FTest()
+        {
+            var coefficientOfDetermination = CoefficientOfDetermination();
+            var fTestValue = coefficientOfDetermination / (1 - coefficientOfDetermination) * ((N - (P + (double)1)) / P);
+            return new FTestResult(fTestValue, N, P);
+        }
+        public bool Normality()
+        {
+            var balancesComputing = new PointEstimationCharacteristicsComputing(Balances);
+            var stdComputing = new StandartDeviationComputing(Balances);
+            var quantileComputing = new SeriesQuantileComputing();
+
+            var skewness = balancesComputing.ComputeSkewnessCoefficient();
+            var kurtosis = balancesComputing.ComputeKurtosisCoefficient();
+            var skewnessStd = stdComputing.ComputeForSkewness();
+            var kurtosisStd = stdComputing.ComputeForKurtosis();
+            var skewnessStatistics = skewness / skewnessStd;
+            var kurtosisStatistics = kurtosis / kurtosisStd;
+
+            var criteria = quantileComputing.ComputeStudentQuantile(1 - Alpha / 2, N - 1);
+            return Math.Abs(skewnessStatistics) <= criteria && Math.Abs(kurtosisStatistics) <= criteria;
         }
     }
 }

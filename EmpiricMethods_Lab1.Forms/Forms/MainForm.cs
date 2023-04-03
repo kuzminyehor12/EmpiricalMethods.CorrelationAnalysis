@@ -21,6 +21,7 @@ namespace EmpiricMethods_Lab1.Forms
         private LinearExistenceCheckForm _linearExistenceForm;
         private OneDimensionalLinearRegressionForm _oneDimensionalLinearRegressionForm;
         private MultiDimensionalLinearRegressionForm _multiDimensionalRegressionForm;
+        private BalancesDiagramForm _balancesDiagramForm;
         public VariationalSeries XSource { get; private set; }
         public VariationalSeries YSource { get; private set; }
         public MainForm()
@@ -38,6 +39,7 @@ namespace EmpiricMethods_Lab1.Forms
             _linearExistenceForm = new LinearExistenceCheckForm();
             _oneDimensionalLinearRegressionForm = new OneDimensionalLinearRegressionForm();
             _multiDimensionalRegressionForm = new MultiDimensionalLinearRegressionForm();
+            _balancesDiagramForm = new BalancesDiagramForm();
         }
 
         public void SetTabPages()
@@ -48,6 +50,7 @@ namespace EmpiricMethods_Lab1.Forms
             _linearExistenceForm.AddToTabPage(tabControl1, 3);
             _oneDimensionalLinearRegressionForm.AddToTabPage(tabControl1, 4);
             _multiDimensionalRegressionForm.AddToTabPage(tabControl1, 5);
+            _balancesDiagramForm.AddToTabPage(tabControl1, 6);
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -81,17 +84,34 @@ namespace EmpiricMethods_Lab1.Forms
             string path = @"E:\Универ\Курс 3\Емпіричні методи\data_lab1,2_real\auto-mpg-v2.dat";
             var independentSources = new VariationalSeries[VariationalSeries.AUTOMPG_COLUMNS_COUNT - 1];
 
-            var dependentSource = new VariationalSeries();
-            dependentSource.InitSeries(path, 1);
+            var dependentSourceIndex = Convert.ToInt32(numericUpDown1.Value);
 
-            for (int i = 2; i <= VariationalSeries.AUTOMPG_COLUMNS_COUNT; i++)
+            var dependentSource = new VariationalSeries();
+            dependentSource.InitSeries(path, dependentSourceIndex);
+
+            for (int i = 1; i <= VariationalSeries.AUTOMPG_COLUMNS_COUNT; i++)
             {
                 var source = new VariationalSeries();
-                source.InitSeries(path, i);
-                independentSources[i - 2] = source;
+
+                if (i == dependentSourceIndex)
+                {
+                    continue;
+                }
+                else if(i < dependentSourceIndex)
+                {
+                    
+                    source.InitSeries(path, i);
+                    independentSources[i - 1] = source;
+                }
+                else if(i > dependentSourceIndex)
+                {
+                    source.InitSeries(path, i);
+                    independentSources[i - 2] = source;
+                }
             }
 
             _multiDimensionalRegressionForm.UploadMultiDimensionalData(dependentSource, independentSources);
+            _balancesDiagramForm.UploadBalancesDiagram(dependentSource, independentSources);
         }
     }
 }

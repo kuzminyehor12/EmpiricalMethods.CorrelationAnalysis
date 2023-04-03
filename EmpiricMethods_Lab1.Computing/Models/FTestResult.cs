@@ -11,10 +11,12 @@ namespace EmpiricMethods_Lab1.Computing.Models
     {
         public double Alpha => 0.05;
         public int N { get; }
-        public FTestResult(double value, int n)
+        public int Param { get; }
+        public FTestResult(double value, int n, int param = 1)
         {
             Value = value;
             N = n;
+            Param = param;
         }
         public double Value { get; set; }
         public double Criteria
@@ -22,7 +24,7 @@ namespace EmpiricMethods_Lab1.Computing.Models
             get 
             {
                 var quantileComputing = new SeriesQuantileComputing();
-                return quantileComputing.ComputePhisherQuantile(1 - Alpha, 1, N - 2);
+                return quantileComputing.ComputePhisherQuantile(1 - Alpha, Param, N - 2);
             }
         }
         public string Summary
