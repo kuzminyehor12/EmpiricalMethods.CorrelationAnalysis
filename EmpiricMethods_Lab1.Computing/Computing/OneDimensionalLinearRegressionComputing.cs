@@ -21,8 +21,8 @@ namespace EmpiricMethods_Lab1.Computing.Computing
         {
             get
             {
-                var a0Value = FirstLinearValue();
-                var a1Value = SecondLinearValue();
+                var a0Value = FirstLinearValue;
+                var a1Value = SecondLinearValue;
                 var balances = new List<double>();
 
                 for (int i = 0; i < Math.Min(XSource.Series.Count, N); i++)
@@ -34,6 +34,10 @@ namespace EmpiricMethods_Lab1.Computing.Computing
             }
         }
 
+        public double FirstLinearValue { get; }
+
+        public double SecondLinearValue { get; }
+
         public int N => YSource.Series.Count;
         public OneDimensionalLinearRegressionComputing(
             VariationalSeries xSource, 
@@ -41,32 +45,23 @@ namespace EmpiricMethods_Lab1.Computing.Computing
         {
             XSource = xSource;
             YSource = ySource;
-        }
 
-        public double FirstLinearValue()
-        {
-
-            var xSourcePointEstimation = new PointEstimationCharacteristicsComputing(XSource);
-            var ySourcePointEstimation = new PointEstimationCharacteristicsComputing(YSource);
-            var a1 = SecondLinearValue();
-            var xAvg = xSourcePointEstimation.ComputeAverage();
-            var yAvg = ySourcePointEstimation.ComputeAverage();
-            return yAvg - a1 * xAvg;
-        }
-
-        public double SecondLinearValue()
-        {
             var correlationComputing = new CorrelationCoefficientComputing(XSource, YSource);
             var xSourcePointEstimation = new PointEstimationCharacteristicsComputing(XSource);
             var ySourcePointEstimation = new PointEstimationCharacteristicsComputing(YSource);
             var pearson = correlationComputing.Pearson();
-            return pearson.Value * (ySourcePointEstimation.ComputeStandartDeviation(true) / xSourcePointEstimation.ComputeStandartDeviation(true));
+            SecondLinearValue = pearson.Value * (ySourcePointEstimation.ComputeStandartDeviation(true) / xSourcePointEstimation.ComputeStandartDeviation(true));
+
+            var a1 = SecondLinearValue;
+            var xAvg = xSourcePointEstimation.ComputeAverage();
+            var yAvg = ySourcePointEstimation.ComputeAverage();
+            FirstLinearValue = yAvg - a1 * xAvg;
         }
 
         public ParameterResult FirstLinearParameter()
         {
             var xSourcePointEstimation = new PointEstimationCharacteristicsComputing(XSource);
-            var value = FirstLinearValue();
+            var value = FirstLinearValue;
             var resuidalVariance = ResidualVariance();
             var result = new FirstLinearResult(value, resuidalVariance, N);
             var avg = xSourcePointEstimation.ComputeAverage();
@@ -81,7 +76,7 @@ namespace EmpiricMethods_Lab1.Computing.Computing
         public ParameterResult SecondLinearParameter()
         {
             var xSourcePointEstimation = new PointEstimationCharacteristicsComputing(XSource);
-            var value = SecondLinearValue();
+            var value = SecondLinearValue;
             var resuidalVariance = ResidualVariance();
             var result = new SecondLinearResult(value, resuidalVariance, N);
             var std = xSourcePointEstimation.ComputeStandartDeviation(true);
@@ -95,8 +90,8 @@ namespace EmpiricMethods_Lab1.Computing.Computing
         public double ResidualVariance()
         {
             double sumOfSquaredErrors = 0;
-            var a0 = FirstLinearValue();
-            var a1 = SecondLinearValue();
+            var a0 = FirstLinearValue;
+            var a1 = SecondLinearValue;
 
             for (int i = 0; i < Math.Min(XSource.Series.Count, N); i++)
             {
@@ -108,8 +103,8 @@ namespace EmpiricMethods_Lab1.Computing.Computing
  
         public FTestResult FTest()
         {
-            var a0 = FirstLinearValue();
-            var a1 = SecondLinearValue();
+            var a0 = FirstLinearValue;
+            var a1 = SecondLinearValue;
             var ySourcePointEstimation = new PointEstimationCharacteristicsComputing(YSource);
             double sum = 0;
 
@@ -151,16 +146,16 @@ namespace EmpiricMethods_Lab1.Computing.Computing
         public List<Tuple<double, double>> RegressionIntervals()
         {
             var regressionIntervals = new List<Tuple<double, double>>();
-            var a0Value = FirstLinearValue();
-            var a1Value = SecondLinearValue();
+            var a0Value = FirstLinearValue;
+            var a1Value = SecondLinearValue;
             var quantileComputing = new SeriesQuantileComputing();
             var criteria = quantileComputing.ComputeStudentQuantile(1 - Alpha / 2, N - 2);
-            var sortedXSource = XSource.Series.OrderBy(n => n).ToList();
+            var sortedXSource = XSource.Series.OrderBy(n => n);
 
-            for (int i = 0; i < sortedXSource.Count; i++)
+            for (int i = 0; i < N; i++)
             {
-                var regressionValue = a0Value + a1Value * sortedXSource[i];
-                var regressionStd = RegressionStandardDeviation(sortedXSource[i]);
+                var regressionValue = a0Value + a1Value * sortedXSource.ElementAt(i);
+                var regressionStd = RegressionStandardDeviation(sortedXSource.ElementAt(i));
                 var inf = regressionValue - criteria * regressionStd;
                 var sup = regressionValue + criteria * regressionStd;
                 regressionIntervals.Add(Tuple.Create(inf, sup));
@@ -172,31 +167,31 @@ namespace EmpiricMethods_Lab1.Computing.Computing
         public List<Tuple<double, double>> ForecastIntervals()
         {
             var forecastIntervals = new List<Tuple<double, double>>();
-            var a0Value = FirstLinearValue();
-            var a1Value = SecondLinearValue();
+            var a0Value = FirstLinearValue;
+            var a1Value = SecondLinearValue;
             var quantileComputing = new SeriesQuantileComputing();
             var criteria = quantileComputing.ComputeStudentQuantile(1 - Alpha / 2, N - 2);
             var residualVariance = ResidualVariance();
-            var sortedXSource = XSource.Series.OrderBy(n => n).ToList();
+            var sortedXSource = XSource.Series.OrderBy(n => n);
 
-            for (int i = 0; i < sortedXSource.Count; i++)
-            {
-                var regressionValue = a0Value + a1Value * sortedXSource[i];
-                var regressionStd = RegressionStandardDeviation(sortedXSource[i]);
-                var forecastStd = Math.Sqrt(Math.Pow(regressionStd, 2) + residualVariance);
-                var inf = regressionValue - criteria * forecastStd;
-                var sup = regressionValue + criteria * forecastStd;
-                forecastIntervals.Add(Tuple.Create(inf, sup));
-            }
+           for (int i = 0; i < N; i++)
+           {
+               var regressionValue = a0Value + a1Value * sortedXSource.ElementAt(i);
+               var regressionStd = RegressionStandardDeviation(sortedXSource.ElementAt(i));
+               var forecastStd = Math.Sqrt(Math.Pow(regressionStd, 2) + residualVariance);
+               var inf = regressionValue - criteria * forecastStd;
+               var sup = regressionValue + criteria * forecastStd;
+               forecastIntervals.Add(Tuple.Create(inf, sup));
+           }
 
             return forecastIntervals;
         }
         public double RegressionStandardDeviation(double x)
         {
-            var xSourcePointEstimation = new PointEstimationCharacteristicsComputing(XSource);
+           // var xSourcePointEstimation = new PointEstimationCharacteristicsComputing(XSource);
             var a1 = SecondLinearParameter();
             var residualVariance = ResidualVariance();
-            var avg = xSourcePointEstimation.ComputeAverage();
+            var avg = XSource.Series.Average();
             return Math.Sqrt(residualVariance / N + Math.Pow(a1.Std * (x - avg), 2));
         }
     }

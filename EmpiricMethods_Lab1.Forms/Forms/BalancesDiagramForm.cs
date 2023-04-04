@@ -18,10 +18,15 @@ namespace EmpiricMethods_Lab1.Forms.Forms
         public BalancesDiagramForm()
         {
             InitializeComponent();
+            chart1.ChartAreas[0].AxisX.Title = "Arguments";
+            chart1.ChartAreas[0].AxisY.Title = "Balances";
+            chart1.AllowZooming();
         }
 
         public void UploadBalancesDiagram(VariationalSeries dependentSource, params VariationalSeries[] independentSources)
         {
+            chart1.Series[0].Points.Clear();
+
             var multiDimensionalComputing = new MultiDimensionalLinearRegressionComputing(dependentSource, independentSources);
             var balances = multiDimensionalComputing.Balances;
             var arguments = multiDimensionalComputing.Arguments;

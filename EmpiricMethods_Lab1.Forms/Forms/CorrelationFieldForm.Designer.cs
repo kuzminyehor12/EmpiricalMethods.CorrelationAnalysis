@@ -44,6 +44,7 @@
             // 
             chartArea1.Name = "ChartArea1";
             this.CorrelationFieldChart.ChartAreas.Add(chartArea1);
+            this.CorrelationFieldChart.Cursor = System.Windows.Forms.Cursors.Default;
             legend1.Name = "Legend1";
             this.CorrelationFieldChart.Legends.Add(legend1);
             this.CorrelationFieldChart.Location = new System.Drawing.Point(0, 0);
