@@ -20,7 +20,7 @@ namespace EmpiricMethods_Lab1.Forms.Forms
         {
             InitializeComponent();
             CorrelationFieldChart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            CorrelationFieldChart.ChartAreas[0].AxisX.MinorGrid.Enabled = false;
+            CorrelationFieldChart.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
             CorrelationFieldChart.ChartAreas[0].AxisY.Title = "Y";
             CorrelationFieldChart.ChartAreas[0].AxisX.Title = "X";
             CorrelationFieldChart.AllowZooming();

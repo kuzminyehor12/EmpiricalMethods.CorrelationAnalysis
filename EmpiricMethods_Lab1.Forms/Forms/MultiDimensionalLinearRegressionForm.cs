@@ -23,6 +23,8 @@ namespace EmpiricMethods_Lab1.Forms.Forms
 
         public void UploadMultiDimensionalData(VariationalSeries depSource, params VariationalSeries[] indepSources)
         {
+            dataGridView1.Rows.Clear();
+
             var multiDimensionalComputing = new MultiDimensionalLinearRegressionComputing(depSource, indepSources);
             var parameters = multiDimensionalComputing.Parameters();
             var variances = multiDimensionalComputing.Variances();

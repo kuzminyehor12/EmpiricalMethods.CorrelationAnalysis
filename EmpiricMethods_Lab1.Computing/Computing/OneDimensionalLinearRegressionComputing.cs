@@ -188,7 +188,6 @@ namespace EmpiricMethods_Lab1.Computing.Computing
         }
         public double RegressionStandardDeviation(double x)
         {
-           // var xSourcePointEstimation = new PointEstimationCharacteristicsComputing(XSource);
             var a1 = SecondLinearParameter();
             var residualVariance = ResidualVariance();
             var avg = XSource.Series.Average();
